@@ -32,18 +32,16 @@ function make_regions(features, regiondefs, namefunc) {
   // Index neighborhoods by name
   let hoods = new Map();
   Object.values(topo.objects).forEach(e => hoods.set(namefunc(e), e));
-  let regions = Object.entries(regiondefs).map(e => {
-    const name = e[0];
-    const regionhoods = e[1];
-    if (typeof(regionhoods) === 'string') {
-      return { name, polys: [hoods.get(regionhoods)] };
+  let regions = regiondefs.map(info => {
+    if (typeof(info.neighborhoods) === 'string') {
+      return { info, polys: [hoods.get(info.neighborhoods)] };
     } else {
-      return { name, polys: regionhoods.map(d => hoods.get(d)) };
+      return { info, polys: info.neighborhoods.map(d => hoods.get(d)) };
     }
   });
   return regions.map(d => {
     let obj = topojson.merge(topo, d.polys);
-    obj.properties = {name: d.name};
+    obj.properties = {name: d.info.name};
     return obj;
   });
 }
