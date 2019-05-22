@@ -1,5 +1,26 @@
-$body-color: blue;
+.columns {
+  display: flex;
+  flex-direction: row;
+}
 
-body {
-  color: $body-color;
+.svgholder {
+  height: 95vh;
+  width: 80vw;
+}
+
+#map-neighborhoods {
+  fill: rgba(127,201,127, 0.5);
+}
+
+#map-regions {
+  fill: rgba(190,174,212, 1);
+}
+
+#map-cities {
+  fill: rgba(253,192,134, 0.5);
+}
+
+.outline {
+  stroke: rgba(55, 55, 55, 0.5);
+  stroke-width: 1px;
 }
