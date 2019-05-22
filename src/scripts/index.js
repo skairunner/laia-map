@@ -26,30 +26,35 @@ function render_geojson(id, classname, features, callback) {
     .on('mouseover', callback);
 }
 
+// accept geojson features, and regiondefs array, then return list of region geojson objects
+function make_regions(features, regiondefs) {
+  let topo = geo2topo(features);
+  // Index neighborhoods by name
+  let hoods = new Map();
+  Object.values(topo.objects).forEach(e => hoods.set(e.properties.name, e));
+  let regions = Object.entries(regiondefs).map(e => {
+    const name = e[0];
+    const regionhoods = e[1];
+    if (typeof(regionhoods) === 'string') {
+      return { name, polys: [hoods.get(regionhoods)] };
+    } else {
+      return { name, polys: regionhoods.map(d => hoods.get(d)) };
+    }
+  });
+  return regions.map(d => {
+    let obj = topojson.merge(topo, d.polys);
+    obj.properties = {name: d.name};
+    return obj;
+  });
+}
+
 fetch('public/neighborhoods-geo.json')
   .then(res => {
     return res.json();
   })
   .then(geojson => {
     geojson.features = geojson.features.filter(d => !EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
-    let topo = geo2topo(geojson.features);
-    // Index neighborhoods by name
-    let hoods = new Map();
-    Object.values(topo.objects).forEach(e => hoods.set(e.properties.name, e));
-    let regions = Object.entries(REGIONS).map(e => {
-      const name = e[0];
-      const regionhoods = e[1];
-      if (typeof(regionhoods) === 'string') {
-        return { name, polys: [hoods.get(regionhoods)] };
-      } else {
-        return { name, polys: regionhoods.map(d => hoods.get(d)) };
-      }
-    });
-    let regionfeatures = regions.map(d => {
-      let obj = topojson.merge(topo, d.polys);
-      obj.properties = {name: d.name};
-      return obj;
-    });
+    let regionfeatures = make_regions(geojson.features, REGIONS)
 
     render_geojson('#map-neighborhoods', 'neighborhood', geojson.features);
     render_geojson('#map-regions', 'region', regionfeatures);
