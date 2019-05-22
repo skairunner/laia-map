@@ -60,5 +60,5 @@ fetch('public/city-planning.json')
     return res.json();
   })
   .then(geojson => {
-    render_geojson('#map-cities', 'cities', geojson.features, d => console.log(d.properties))
+    render_geojson('#map-cities', 'cities', geojson.features, d => console.log(d.properties.AREA_NAME))
   });
