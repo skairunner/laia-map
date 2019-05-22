@@ -2,7 +2,7 @@ import * as topojson from 'topojson';
 import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
-import { EXCLUDED_NEIGHBORHOODS, REGIONS } from './constants';
+import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS } from './constants';
 
 import '../styles/index.scss';
 
@@ -27,11 +27,11 @@ function render_geojson(id, classname, features, callback) {
 }
 
 // accept geojson features, and regiondefs array, then return list of region geojson objects
-function make_regions(features, regiondefs) {
+function make_regions(features, regiondefs, namefunc) {
   let topo = geo2topo(features);
   // Index neighborhoods by name
   let hoods = new Map();
-  Object.values(topo.objects).forEach(e => hoods.set(e.properties.name, e));
+  Object.values(topo.objects).forEach(e => hoods.set(namefunc(e), e));
   let regions = Object.entries(regiondefs).map(e => {
     const name = e[0];
     const regionhoods = e[1];
@@ -54,10 +54,10 @@ fetch('public/neighborhoods-geo.json')
   })
   .then(geojson => {
     geojson.features = geojson.features.filter(d => !EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
-    let regionfeatures = make_regions(geojson.features, REGIONS)
+    let regionfeatures = make_regions(geojson.features, REGIONS, d => d.properties.name)
 
     render_geojson('#map-neighborhoods', 'neighborhood', geojson.features);
-    render_geojson('#map-regions', 'region', regionfeatures);
+    render_geojson('#small-regions', 'region', regionfeatures);
   })
 
 fetch('public/city-planning.json')
@@ -65,5 +65,8 @@ fetch('public/city-planning.json')
     return res.json();
   })
   .then(geojson => {
+    console.log(geojson)
+    let regionfeatures = make_regions(geojson.features, LARGE_REGIONS, d => d.properties.AREA_NAME);
+    render_geojson('#large-regions', 'region', regionfeatures);
     render_geojson('#map-cities', 'cities', geojson.features, d => console.log(d.properties.AREA_NAME))
   });

@@ -25,6 +25,7 @@ export const EXCLUDED_NEIGHBORHOODS = new Set([
   'Val Verde'
 ]);
 
+// Combinations of neighborhoods
 export const REGIONS = {
   Downtown: 'Downtown',
   Chinatown: 'Chinatown',
@@ -34,3 +35,20 @@ export const REGIONS = {
   Seaside: 'San Pedro',
   'The Forest': ['Ridge Route', 'Castaic Canyons', 'Angeles Crest', 'Tujunga Canyons', 'Southeast Antelope Valley']
 };
+
+// Combinations of city planning areas
+export const LARGE_REGIONS = {
+  Outskirts: [
+    'West San Gabriel Valley Planning Area',
+    'East San Gabriel Valley Planning Area',
+    'Gateway Planning Area',
+    'South Bay Planning Area',
+    'Santa Monica Mountains Planning Area',
+    'San Fernando Valley Planning Area',
+    'Santa Clarita Valley Planning Area'
+  ],
+  'Inner City': [
+    'Westside Planning Area',
+    'Metro Planning Area'
+  ]
+}
