@@ -8,19 +8,27 @@
   width: 80vw;
 }
 
-#map-neighborhoods {
-  fill: rgba(127,201,127, 0.5);
-}
-
-#map-regions {
+.location {
   fill: rgba(190,174,212, 1);
 }
 
-#map-cities {
-  fill: rgba(253,192,134, 0.5);
+.region:hover {
+  stroke: rgba(99, 99, 99, 0.3);
+  stroke-width: 2px;
 }
 
-.outline {
-  stroke: rgba(55, 55, 55, 0.5);
-  stroke-width: 1px;
+#map-neighborhoods {
+  fill: rgba(127,201,127, 0);
+}
+
+#map-cities {
+  fill: rgba(253,192,134, 0);
+}
+
+.water {
+  fill: #9dc3e0;
+}
+
+.earth {
+  fill: #e3e2e0;
 }

@@ -2,14 +2,15 @@ import * as topojson from 'topojson';
 import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
-import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS } from './constants';
+import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_LONGLAT, LA_TRANSLATE, LA_SCALE } from './constants';
 
 import '../styles/index.scss';
 
+
 let projection = d3geo.geoMercator()
-  .rotate([118.243683, 33.9735])
-  .translate([523.6547830169354, 28062.73757963573])
-  .scale(16982.165984676663);
+  .rotate(LA_ROTATE)
+  .translate(LA_TRANSLATE)
+  .scale(LA_SCALE);
 let geo = d3geo.geoPath(projection);
 
 const _defaultRenderGeojsonCallback = d => console.log(d.properties.name);
@@ -22,7 +23,9 @@ function render_geojson(id, classname, features, callback) {
     .enter()
     .append('path')
     .classed(classname, true)
+    .classed('location', d => d.properties.kind === 'location')
     .attr('d', geo)
+    .style('fill', d => d.properties.color)
     .on('mouseover', callback);
 }
 
@@ -41,7 +44,7 @@ function make_regions(features, regiondefs, namefunc) {
   });
   return regions.map(d => {
     let obj = topojson.merge(topo, d.polys);
-    obj.properties = {name: d.info.name};
+    obj.properties = {name: d.info.name, ...d.info};
     return obj;
   });
 }
@@ -63,8 +66,21 @@ fetch('public/city-planning.json')
     return res.json();
   })
   .then(geojson => {
-    console.log(geojson)
     let regionfeatures = make_regions(geojson.features, LARGE_REGIONS, d => d.properties.AREA_NAME);
     render_geojson('#large-regions', 'region', regionfeatures);
-    render_geojson('#map-cities', 'cities', geojson.features, d => console.log(d.properties.AREA_NAME))
   });
+
+fetch('public/tiles.topojson')
+  .then(res => res.json())
+  .then(topo => {
+    d3.select('#basemap')
+      .append('path')
+      .classed('water', true)
+      .datum(topojson.feature(topo, topo.objects.water))
+      .attr('d', geo);
+    d3.select('#basemap')
+      .append('path')
+      .classed('earth', true)
+      .datum(topojson.feature(topo, topo.objects.earth))
+      .attr('d', geo);
+  })

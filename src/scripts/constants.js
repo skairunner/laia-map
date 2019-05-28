@@ -1,3 +1,8 @@
+export const LA_ROTATE = [118.243683, 33.9735];
+export const LA_LONGLAT = [-118.243683, 33.9735];
+export const LA_TRANSLATE = [523.6547830169354, 28062.73757963573];
+export const LA_SCALE = 16982.165984676663;
+
 export const EXCLUDED_NEIGHBORHOODS = new Set([
   'Unincorporated Catalina Island',
   'Avalon',
@@ -31,7 +36,7 @@ export const REGIONS = [
     name: 'Downtown',
     neighborhoods: 'Downtown',
     kind: 'district',
-    color: null
+    color: 'rgb(141,211,199)'
   },
   {
     name: 'Chinatown',
@@ -51,13 +56,13 @@ export const REGIONS = [
     name: 'Hollywood',
     neighborhoods: ['Hollywood', 'East Hollywood', 'West Hollywood', 'Hollywood Hills', 'Hollywood Hills West', 'North Hollywood', 'Universal City', 'Studio City'],
     kind: 'district',
-    color: null
+    color: 'rgb(255,255,179)'
   },
   {
     name: 'Santa Monica',
     neighborhoods: 'Santa Monica',
     kind: 'district',
-    color: null
+    color: 'rgb(128,177,211)'
   },
   {
     name: 'Seaside',
@@ -73,7 +78,7 @@ export const REGIONS = [
     category: 'Outskirts',
     color: null
   },
-]
+];
 
 // Combinations of city planning areas
 export const LARGE_REGIONS = [
@@ -89,7 +94,7 @@ export const LARGE_REGIONS = [
         'Santa Clarita Valley Planning Area'
       ],
     kind: 'district',
-    color: null
+    color: 'rgb(179,222,105)'
   },
   {
     name: 'Inner City',
@@ -98,6 +103,6 @@ export const LARGE_REGIONS = [
         'Metro Planning Area'
       ],
     kind: 'district',
-    color: null
+    color: 'rgb(253,180,98)'
   }
-]
+];

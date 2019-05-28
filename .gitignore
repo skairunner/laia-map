@@ -1,11 +1,15 @@
 # dependencies
 node_modules
+__pycache__
 
 # production
 build
+**/tiles.topojson
 
 # misc
 .DS_Store
+.envrc
+topojsons/
 
 npm-debug.log
 yarn-error.log
