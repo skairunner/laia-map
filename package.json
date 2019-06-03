@@ -51,6 +51,7 @@
     "core-js": "^3.0.1",
     "d3-geo": "^1.11.3",
     "d3-selection": "^1.4.0",
+    "d3-zoom": "^1.7.3",
     "topojson": "^3.0.2",
     "topojson-server": "^3.0.0"
   }

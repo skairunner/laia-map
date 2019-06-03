@@ -2,6 +2,7 @@ import * as topojson from 'topojson';
 import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
+import * as d3zoom from 'd3-zoom';
 import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_LONGLAT, LA_TRANSLATE, LA_SCALE } from './constants';
 
 import '../styles/index.scss';
@@ -48,6 +49,17 @@ function make_regions(features, regiondefs, namefunc) {
     return obj;
   });
 }
+
+///////////////// The actual initialization
+let maptransform = d3.select('#maptransform');
+var zoom = d3zoom.zoom()
+  .on('zoom', () => {
+    const t = d3.event.transform;
+    maptransform.attr('transform', `translate(${t.x}, ${t.y}) scale(${t.k})`)
+  });
+
+let LAMap = d3.select('#lamap')
+  .call(zoom);
 
 fetch('public/neighborhoods-geo.json')
   .then(res => {
