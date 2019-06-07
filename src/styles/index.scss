@@ -3,13 +3,32 @@
   flex-direction: row;
 }
 
-.svgholder {
-  height: 95vh;
-  width: 80vw;
+.columns > div {
+  margin: 1rem;
 }
 
-.location {
-  fill: rgba(190,174,212, 1);
+.svgholder {
+  height: 95vh;
+  width: 70vw;
+}
+
+.sidebar {
+  height: 100%;
+  width: 20vw;
+}
+
+.neighborhood {
+  fill: rgba(252,174,145, 1);
+}
+
+#Chinatown {
+  stroke: rgba(244, 70, 6, 0.4);
+  stroke-width: 2px;
+}
+
+#Chinatown:hover {
+  stroke: rgba(99, 99, 99, 0.3);
+  stroke-width: 2px;
 }
 
 .region:hover {

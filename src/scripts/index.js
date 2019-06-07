@@ -3,6 +3,7 @@ import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
 import * as d3zoom from 'd3-zoom';
+import * as slugify from 'slugify';
 import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_LONGLAT, LA_TRANSLATE, LA_SCALE } from './constants';
 
 import '../styles/index.scss';
@@ -24,10 +25,18 @@ function render_geojson(id, classname, features, callback) {
     .enter()
     .append('path')
     .classed(classname, true)
-    .classed('location', d => d.properties.kind === 'location')
+    .classed('neighborhood', d => d.properties.kind === 'neighborhood')
     .attr('d', geo)
+    .attr('id', d => slugify(d.properties.name))
     .style('fill', d => d.properties.color)
-    .on('mouseover', callback);
+    .each(d => {
+      d.properties.bounds = geo.bounds(d);
+    })
+    .on('mouseover', callback)
+    .on('click', d => {
+      d3.select('#district-name')
+        .text(d.properties.name);
+    });
 }
 
 // accept geojson features, and regiondefs array, then return list of region geojson objects
@@ -44,10 +53,16 @@ function make_regions(features, regiondefs, namefunc) {
     }
   });
   return regions.map(d => {
-    let obj = topojson.merge(topo, d.polys);
-    obj.properties = {name: d.info.name, ...d.info};
-    return obj;
-  });
+    try {
+      let obj = topojson.merge(topo, d.polys);
+      obj.properties = {name: d.info.name, ...d.info};
+      return obj;
+    } catch (error) {
+      console.error(`While parsing region ${d.info.name}:`);
+      console.error(error);
+      return null;
+    }
+  }).filter(d => d !== null);
 }
 
 ///////////////// The actual initialization
@@ -61,6 +76,7 @@ var zoom = d3zoom.zoom()
 let LAMap = d3.select('#lamap')
   .call(zoom);
 
+let all_regions = [];
 fetch('public/neighborhoods-geo.json')
   .then(res => {
     return res.json();
@@ -68,8 +84,7 @@ fetch('public/neighborhoods-geo.json')
   .then(geojson => {
     geojson.features = geojson.features.filter(d => !EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
     let regionfeatures = make_regions(geojson.features, REGIONS, d => d.properties.name)
-
-    render_geojson('#map-neighborhoods', 'neighborhood', geojson.features);
+    all_regions.concat(regionfeatures);
     render_geojson('#small-regions', 'region', regionfeatures);
   })
 
@@ -79,6 +94,7 @@ fetch('public/city-planning.json')
   })
   .then(geojson => {
     let regionfeatures = make_regions(geojson.features, LARGE_REGIONS, d => d.properties.AREA_NAME);
+    all_regions.concat(regionfeatures);
     render_geojson('#large-regions', 'region', regionfeatures);
   });
 

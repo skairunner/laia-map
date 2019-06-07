@@ -36,46 +36,59 @@ export const REGIONS = [
     name: 'Downtown',
     neighborhoods: 'Downtown',
     kind: 'district',
-    color: 'rgb(141,211,199)'
+    color: 'rgb(106, 81, 163)'
   },
   {
     name: 'Chinatown',
     neighborhoods: 'Chinatown',
-    kind: 'location',
+    kind: 'neighborhood',
     category: 'Neighborhoods',
+    parent: 'Inner City',
     color: null
   },
   {
     name: 'Koreatown',
     neighborhoods: 'Koreatown',
-    kind: 'location',
+    kind: 'neighborhood',
     category: 'Neighborhoods',
+    parent: 'Inner City',
     color: null
   },
   {
     name: 'Hollywood',
     neighborhoods: ['Hollywood', 'East Hollywood', 'West Hollywood', 'Hollywood Hills', 'Hollywood Hills West', 'North Hollywood', 'Universal City', 'Studio City'],
     kind: 'district',
-    color: 'rgb(255,255,179)'
+    color: 'rgb(158, 154, 200)'
   },
   {
     name: 'Santa Monica',
     neighborhoods: 'Santa Monica',
-    kind: 'district',
-    color: 'rgb(128,177,211)'
+    kind: 'neighborhood',
+    parent: 'Inner City',
+    color: null
   },
   {
     name: 'Seaside',
     neighborhoods: 'San Pedro',
-    kind: 'location',
-    category: 'Outskirts',
+    kind: 'neighborhood',
+    category: 'Neighborhoods',
+    parent: 'Outskirts',
     color: null
   },
   {
     name: 'The Forest',
     neighborhoods: ['Ridge Route', 'Castaic Canyons', 'Angeles Crest', 'Tujunga Canyons', 'Southeast Antelope Valley'],
-    kind: 'location',
-    category: 'Outskirts',
+    kind: 'neighborhood',
+    category: 'Neighborhoods',
+    parent: 'Outskirts',
+    color: null
+  },
+  {
+    name: 'Eastside LA',
+    neighborhoods: ['Boyle Heights', 'El Sereno', 'Lincoln Heights', 'East Los Angeles'],
+    kind: 'neighborhood',
+    category: 'Neighborhoods',
+    parent: 'Inner City',
     color: null
   },
 ];
@@ -94,7 +107,7 @@ export const LARGE_REGIONS = [
         'Santa Clarita Valley Planning Area'
       ],
     kind: 'district',
-    color: 'rgb(179,222,105)'
+    color: 'rgb(242, 240, 247)'
   },
   {
     name: 'Inner City',
@@ -103,6 +116,6 @@ export const LARGE_REGIONS = [
         'Metro Planning Area'
       ],
     kind: 'district',
-    color: 'rgb(253,180,98)'
+    color: 'rgb(203, 201, 226)'
   }
 ];
