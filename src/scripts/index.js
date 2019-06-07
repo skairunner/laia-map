@@ -15,7 +15,7 @@ let projection = d3geo.geoMercator()
   .scale(LA_SCALE);
 let geo = d3geo.geoPath(projection);
 
-const _defaultRenderGeojsonCallback = d => console.log(d.properties.name);
+const _defaultRenderGeojsonCallback = d => {};
 
 function render_geojson(id, classname, features, callback) {
   callback = callback || _defaultRenderGeojsonCallback;
@@ -29,13 +29,24 @@ function render_geojson(id, classname, features, callback) {
     .attr('d', geo)
     .attr('id', d => slugify(d.properties.name))
     .style('fill', d => d.properties.color)
-    .each(d => {
-      d.properties.bounds = geo.bounds(d);
+    .each(function(d) {
+      const bounds = this.getBBox();
+      d.properties.bounds = bounds;
+      const dx = bounds.width;
+      const dy = bounds.height;
+      const x = bounds.x;
+      const y = bounds.y;
+      d.properties.scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / 960, dy / 500)));
+      d.properties.translate = [960 / 2 - d.properties.scale * x, 500 / 2 - d.properties.scale * y];
     })
     .on('mouseover', callback)
     .on('click', d => {
-      d3.select('#district-name')
+      d3.select('#region-name')
         .text(d.properties.name);
+      const translate = d.properties.translate;
+      const scale = d.properties.scale;
+      d3.select('#lamap')
+        .call(zoom.transform, d3zoom.zoomIdentity.translate(translate[0],translate[1]).scale(scale) );
     });
 }
 
@@ -69,6 +80,7 @@ function make_regions(features, regiondefs, namefunc) {
 let maptransform = d3.select('#maptransform');
 var zoom = d3zoom.zoom()
   .on('zoom', () => {
+    console.log(d3.event.transform);
     const t = d3.event.transform;
     maptransform.attr('transform', `translate(${t.x}, ${t.y}) scale(${t.k})`)
   });
