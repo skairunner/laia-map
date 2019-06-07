@@ -34,9 +34,9 @@ function render_geojson(id, classname, features, callback) {
       d.properties.bounds = bounds;
       const dx = bounds.width;
       const dy = bounds.height;
-      const x = bounds.x;
-      const y = bounds.y;
-      d.properties.scale = Math.max(1, Math.min(8, 0.9 / Math.max(dx / 960, dy / 500)));
+      const x = bounds.x + dx / 2;
+      const y = bounds.y + dy / 2;
+      d.properties.scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / 960, dy / 500)));
       d.properties.translate = [960 / 2 - d.properties.scale * x, 500 / 2 - d.properties.scale * y];
     })
     .on('mouseover', callback)
@@ -46,6 +46,7 @@ function render_geojson(id, classname, features, callback) {
       const translate = d.properties.translate;
       const scale = d.properties.scale;
       d3.select('#lamap')
+        .transition()
         .call(zoom.transform, d3zoom.zoomIdentity.translate(translate[0],translate[1]).scale(scale) );
     });
 }
