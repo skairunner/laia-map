@@ -43,6 +43,15 @@ function render_geojson(id, classname, features, callback) {
     .on('click', d => {
       d3.select('#region-name')
         .text(d.properties.name);
+      let childs = d3.select('#region-children')
+        .selectAll('.region-child')
+        .data(all_regions.filter(dd => dd.properties.parent === d.properties.name));
+      childs.enter()
+        .append('li')
+        .classed('region-child', true)
+        .text(d => d.properties.name);
+      childs.exit()
+        .remove();
       const translate = d.properties.translate;
       const scale = d.properties.scale;
       d3.select('#lamap')
@@ -81,7 +90,6 @@ function make_regions(features, regiondefs, namefunc) {
 let maptransform = d3.select('#maptransform');
 var zoom = d3zoom.zoom()
   .on('zoom', () => {
-    console.log(d3.event.transform);
     const t = d3.event.transform;
     maptransform.attr('transform', `translate(${t.x}, ${t.y}) scale(${t.k})`)
   });
@@ -97,7 +105,7 @@ fetch('public/neighborhoods-geo.json')
   .then(geojson => {
     geojson.features = geojson.features.filter(d => !EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
     let regionfeatures = make_regions(geojson.features, REGIONS, d => d.properties.name)
-    all_regions.concat(regionfeatures);
+    all_regions = all_regions.concat(regionfeatures);
     render_geojson('#small-regions', 'region', regionfeatures);
   })
 
@@ -107,7 +115,7 @@ fetch('public/city-planning.json')
   })
   .then(geojson => {
     let regionfeatures = make_regions(geojson.features, LARGE_REGIONS, d => d.properties.AREA_NAME);
-    all_regions.concat(regionfeatures);
+    all_regions = all_regions.concat(regionfeatures);
     render_geojson('#large-regions', 'region', regionfeatures);
   });
 
