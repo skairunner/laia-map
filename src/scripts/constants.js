@@ -2,6 +2,7 @@ export const LA_ROTATE = [118.243683, 33.9735];
 export const LA_LONGLAT = [-118.243683, 33.9735];
 export const LA_TRANSLATE = [523.6547830169354, 28062.73757963573];
 export const LA_SCALE = 16982.165984676663;
+export const MAX_SCALE = 3;
 
 export const EXCLUDED_NEIGHBORHOODS = new Set([
   'Unincorporated Catalina Island',

@@ -1,3 +1,5 @@
+import { MAX_SCALE } from './constants';
+
 /**
  * @typedef {Object} ZoomTransform
  * @property {number[]} t - An array of length 2 that depicts the translate amount.
@@ -15,7 +17,7 @@ export function transformFromBbox(bbox) {
   const x = bbox.x + dx / 2;
   const y = bbox.y + dy / 2;
   // scale
-  const k = Math.max(1, Math.min(8, 0.8 / Math.max(dx / 960, dy / 500)));
+  const k = Math.max(1, Math.min(MAX_SCALE, 0.8 / Math.max(dx / 960, dy / 500)));
   // translate
   const t = [960 / 2 - k * x, 500 / 2 - k * y];
   return { k, t };
