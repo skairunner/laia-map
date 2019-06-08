@@ -5,7 +5,7 @@ import os
 
 LA_LONGLAT = [-118.243683, 33.9735]
 Z = 7
-LEVELS = 2
+LEVELS = 1
 
 class Coord:
     def __init__(self, z, x, y):
@@ -43,5 +43,5 @@ key = os.environ['NEXTZEN_KEY']
 for coord in COORDS:
     print(f'Getting map at {coord.z}/{coord.x}/{coord.y}')
     topo = requests.get(f"https://tile.nextzen.org/tilezen/vector/v1/512/all/{coord.z}/{coord.x}/{coord.y}.topojson?api_key={key}").json()
-    with open(f'512-{coord.z}-{coord.x}-{coord.y}.topojson', 'w') as f:
+    with open(f'topojsons/512-{coord.z}-{coord.x}-{coord.y}.topojson', 'w') as f:
         json.dump(topo, f)
