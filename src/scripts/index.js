@@ -17,6 +17,18 @@ let geo = d3geo.geoPath(projection);
 
 const _defaultRenderGeojsonCallback = d => {};
 
+function transformFromBbox(bbox) {
+  const dx = bbox.width;
+  const dy = bbox.height;
+  const x = bbox.x + dx / 2;
+  const y = bbox.y + dy / 2;
+  // scale
+  const k = Math.max(1, Math.min(8, 0.8 / Math.max(dx / 960, dy / 500)));
+  // translate
+  const t = [960 / 2 - k * x, 500 / 2 - k * y];
+  return { k, t };
+}
+
 function render_geojson(id, classname, features, callback) {
   callback = callback || _defaultRenderGeojsonCallback;
   d3.select(id)
@@ -30,33 +42,34 @@ function render_geojson(id, classname, features, callback) {
     .attr('id', d => slugify(d.properties.name))
     .style('fill', d => d.properties.color)
     .each(function(d) {
-      const bounds = this.getBBox();
-      d.properties.bounds = bounds;
-      const dx = bounds.width;
-      const dy = bounds.height;
-      const x = bounds.x + dx / 2;
-      const y = bounds.y + dy / 2;
-      d.properties.scale = Math.max(1, Math.min(8, 0.8 / Math.max(dx / 960, dy / 500)));
-      d.properties.translate = [960 / 2 - d.properties.scale * x, 500 / 2 - d.properties.scale * y];
+      d.properties.transform = transformFromBbox(this.getBBox());
     })
     .on('mouseover', callback)
     .on('click', d => {
+      let childdata = [], name, zoomtarget;
+      if (CURRENT_FOCUS === d.properties.name) {
+        name = '';
+        zoomtarget = { t: [0, 0], k: 1 };
+      } else {
+        // Zoom to new target
+        name = d.properties.name;
+        childdata = all_regions.filter(datum => datum.properties.parent === name);
+        zoomtarget = d.properties.transform;
+      }
+      CURRENT_FOCUS = name;
       d3.select('#region-name')
-        .text(d.properties.name);
+        .text(name);
       let childs = d3.select('#region-children')
         .selectAll('.region-child')
-        .data(all_regions.filter(dd => dd.properties.parent === d.properties.name));
+        .data(childdata);
       childs.enter()
         .append('li')
         .classed('region-child', true)
         .text(d => d.properties.name);
       childs.exit()
         .remove();
-      const translate = d.properties.translate;
-      const scale = d.properties.scale;
       d3.select('#lamap')
-        .transition()
-        .call(zoom.transform, d3zoom.zoomIdentity.translate(translate[0],translate[1]).scale(scale) );
+        .call(zoom.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k) );
     });
 }
 
@@ -86,8 +99,10 @@ function make_regions(features, regiondefs, namefunc) {
   }).filter(d => d !== null);
 }
 
-///////////////// The actual initialization
+///////////////// The actual initialization /////////////////
 let maptransform = d3.select('#maptransform');
+var CURRENT_FOCUS = null; // To track the zoom-in zoom-out on click
+
 var zoom = d3zoom.zoom()
   .on('zoom', () => {
     const t = d3.event.transform;
