@@ -4,7 +4,9 @@ import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
 import * as d3zoom from 'd3-zoom';
 import * as slugify from 'slugify';
-import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_LONGLAT, LA_TRANSLATE, LA_SCALE } from './constants';
+import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_TRANSLATE, LA_SCALE, POIS } from './constants';
+import * as util from './utility';
+import * as G from './globals';
 
 import '../styles/index.scss';
 
@@ -16,18 +18,7 @@ let projection = d3geo.geoMercator()
 let geo = d3geo.geoPath(projection);
 
 const _defaultRenderGeojsonCallback = d => {};
-
-function transformFromBbox(bbox) {
-  const dx = bbox.width;
-  const dy = bbox.height;
-  const x = bbox.x + dx / 2;
-  const y = bbox.y + dy / 2;
-  // scale
-  const k = Math.max(1, Math.min(8, 0.8 / Math.max(dx / 960, dy / 500)));
-  // translate
-  const t = [960 / 2 - k * x, 500 / 2 - k * y];
-  return { k, t };
-}
+let PREV_ZOOM = 1;
 
 function render_geojson(id, classname, features, callback) {
   callback = callback || _defaultRenderGeojsonCallback;
@@ -42,12 +33,12 @@ function render_geojson(id, classname, features, callback) {
     .attr('id', d => slugify(d.properties.name))
     .style('fill', d => d.properties.color)
     .each(function(d) {
-      d.properties.transform = transformFromBbox(this.getBBox());
+      d.properties.transform = util.transformFromBbox(this.getBBox());
     })
     .on('mouseover', callback)
     .on('click', d => {
       let childdata = [], name, zoomtarget;
-      if (CURRENT_FOCUS === d.properties.name) {
+      if (G.CURRENT_FOCUS === d.properties.name) {
         name = '';
         zoomtarget = { t: [0, 0], k: 1 };
       } else {
@@ -56,7 +47,8 @@ function render_geojson(id, classname, features, callback) {
         childdata = all_regions.filter(datum => datum.properties.parent === name);
         zoomtarget = d.properties.transform;
       }
-      CURRENT_FOCUS = name;
+      G.set_current_focus(name);
+      // update sidebar
       d3.select('#region-name')
         .text(name);
       let childs = d3.select('#region-children')
@@ -68,8 +60,24 @@ function render_geojson(id, classname, features, callback) {
         .text(d => d.properties.name);
       childs.exit()
         .remove();
+      // Do zoom
       d3.select('#lamap')
-        .call(zoom.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k) );
+        .call(G.ZOOM.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k));
+      // If zoom is within certain bounds, make circles smaller
+      if (PREV_ZOOM !== zoomtarget.k) { // only update on change
+        PREV_ZOOM = zoomtarget.k;
+        let radius = 1;
+        if (zoomtarget.k < 4) {
+          radius = 1;
+        } else if (zoomtarget.k < 6) {
+          radius = 0.75;
+        } else {
+          radius = 0.5;
+        }
+        d3.select('#pois')
+          .selectAll('.poi')
+          .attr('r', radius);
+      }
     });
 }
 
@@ -100,17 +108,7 @@ function make_regions(features, regiondefs, namefunc) {
 }
 
 ///////////////// The actual initialization /////////////////
-let maptransform = d3.select('#maptransform');
-var CURRENT_FOCUS = null; // To track the zoom-in zoom-out on click
 
-var zoom = d3zoom.zoom()
-  .on('zoom', () => {
-    const t = d3.event.transform;
-    maptransform.attr('transform', `translate(${t.x}, ${t.y}) scale(${t.k})`)
-  });
-
-let LAMap = d3.select('#lamap')
-  .call(zoom);
 
 let all_regions = [];
 fetch('public/neighborhoods-geo.json')
@@ -148,3 +146,25 @@ fetch('public/tiles.topojson')
       .datum(topojson.feature(topo, topo.objects.earth))
       .attr('d', geo);
   })
+
+// Also render PoIs
+const pois = POIS.map(d => ({
+  'type': 'Feature',
+  geometry: {
+    'type': 'Point',
+    coordinates: d.gps ? d.gps : [0, 0]
+  },
+  properties: {
+    ...d
+  }
+}));
+all_regions = all_regions.concat(pois);
+
+d3.select('#pois')
+  .selectAll('.poi')
+  .data(pois)
+  .enter()
+  .append('circle')
+  .attr('cx', d => projection(d.geometry.coordinates)[0])
+  .attr('cy', d => projection(d.geometry.coordinates)[1])
+  .attr('r', 1);

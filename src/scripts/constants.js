@@ -119,3 +119,26 @@ export const LARGE_REGIONS = [
     color: 'rgb(203, 201, 226)'
   }
 ];
+
+export const POIS = [
+  {
+    name: 'Requiem',
+    kind: 'poi',
+    poitype: 'elysium',
+    parent: 'Downtown',
+    blurb: `A popular public nightclub for both kindred and kine. The lower level is primarily where the kine congregate, featuring flashing lights, throbbing bass, and a constantly packed dance floor. The music seems to be generic pop of all sorts, ranging from country pop to hip-hop, but always whatever happens to be hot on the radio lately. 
+
+The upper level serves blood (1 BP a night) for kindred with backdoor access. It seems to be somewhat classier than the nightclub below, with a more relaxed atmosphere. This is an Anarch owned Elysium.`,
+    gps: null // GPS can be omitted to not display on map, only on sidebar
+  },
+  {
+    name: 'Good Samaritan Hospital',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Downtown',
+    blurb: `Founded in 1885, Good Samaritan Hospital is located on Wilshire Blvd.The hospital is located in Downtown, near the Financial District, between the Northern and Southern neighborhoods of Westlake. Many of Skid Row's victims are admitted to this hospital due to its location.
+
+Good Samaritan Hospital is a progressive, tertiary, not-for-profit hospital. The hospital was historically affiliated with the Episcopal Church, but currently pastoral care services are available for all religions and denominations.`,
+    gps:  [-118.2674585, 34.0546739] 
+  },
+]
