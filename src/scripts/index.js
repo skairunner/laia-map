@@ -57,6 +57,7 @@ function render_geojson(id, classname, features, callback) {
       childs.enter()
         .append('li')
         .classed('region-child', true)
+        .merge(childs)
         .text(d => d.properties.name);
       childs.exit()
         .remove();
