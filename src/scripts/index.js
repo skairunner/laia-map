@@ -3,8 +3,10 @@ import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
 import * as d3zoom from 'd3-zoom';
+import * as d3shape from 'd3-shape';
+import * as geosimplify from 'simplify-geojson';
 import * as slugify from 'slugify';
-import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_TRANSLATE, LA_SCALE, POIS } from './constants';
+import * as CON from './constants';
 import * as util from './utility';
 import * as G from './globals';
 
@@ -12,9 +14,9 @@ import '../styles/index.scss';
 
 
 let projection = d3geo.geoMercator()
-  .rotate(LA_ROTATE)
-  .translate(LA_TRANSLATE)
-  .scale(LA_SCALE);
+  .rotate(CON.LA_ROTATE)
+  .translate(CON.LA_TRANSLATE)
+  .scale(CON.LA_SCALE);
 let geo = d3geo.geoPath(projection);
 
 const _defaultRenderGeojsonCallback = d => {};
@@ -58,6 +60,12 @@ function render_geojson(id, classname, features, callback) {
         .append('li')
         .classed('region-child', true)
         .merge(childs)
+        .each(function(d) {
+          if (d.properties.kind === 'poi') {
+            d3.select(this)
+              .classed(`poi-${d.properties.poitype}`, true);
+          }
+        })
         .text(d => d.properties.name);
       childs.exit()
         .remove();
@@ -117,8 +125,8 @@ fetch('public/neighborhoods-geo.json')
     return res.json();
   })
   .then(geojson => {
-    geojson.features = geojson.features.filter(d => !EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
-    let regionfeatures = make_regions(geojson.features, REGIONS, d => d.properties.name)
+    geojson.features = geojson.features.filter(d => !CON.EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
+    let regionfeatures = make_regions(geojson.features, CON.REGIONS, d => d.properties.name)
     all_regions = all_regions.concat(regionfeatures);
     render_geojson('#small-regions', 'region', regionfeatures);
   })
@@ -128,7 +136,7 @@ fetch('public/city-planning.json')
     return res.json();
   })
   .then(geojson => {
-    let regionfeatures = make_regions(geojson.features, LARGE_REGIONS, d => d.properties.AREA_NAME);
+    let regionfeatures = make_regions(geojson.features, CON.LARGE_REGIONS, d => d.properties.AREA_NAME);
     all_regions = all_regions.concat(regionfeatures);
     render_geojson('#large-regions', 'region', regionfeatures);
   });
@@ -149,7 +157,7 @@ fetch('public/tiles.topojson')
   })
 
 // Also render PoIs
-const pois = POIS.map(d => ({
+const pois = CON.POIS.map(d => ({
   'type': 'Feature',
   geometry: {
     'type': 'Point',
@@ -161,11 +169,11 @@ const pois = POIS.map(d => ({
 }));
 all_regions = all_regions.concat(pois);
 
+let symbolgen = d3shape.symbol().size(8);
 d3.select('#pois')
   .selectAll('.poi')
   .data(pois)
   .enter()
-  .append('circle')
-  .attr('cx', d => projection(d.geometry.coordinates)[0])
-  .attr('cy', d => projection(d.geometry.coordinates)[1])
-  .attr('r', 1);
+  .append('path')
+  .attr('transform', d => `translate(${projection(d.geometry.coordinates)})`)
+  .attr('d', d => symbolgen.type(CON.SYMBOLS[d.properties.poitype])());

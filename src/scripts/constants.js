@@ -1,3 +1,5 @@
+import * as d3shape from 'd3-shape';
+
 export const LA_ROTATE = [118.243683, 33.9735];
 export const LA_LONGLAT = [-118.243683, 33.9735];
 export const LA_TRANSLATE = [523.6547830169354, 28062.73757963573];
@@ -121,6 +123,20 @@ export const LARGE_REGIONS = [
   }
 ];
 
+// Map PoI Types to symbols
+export const SYMBOLS = {
+  elysium: d3shape.symbolWye,
+  normal: d3shape.symbolCircle,
+  haven: d3shape.symbolCross,
+}
+
+// Map PoI Types to unicode symbols, for sidebar
+export const SYMBOLS_UNICODE = {
+  elysium: 'Ｙ',
+  normal: '⬤',
+  haven: '✚',
+}
+
 export const POIS = [
   {
     name: 'Requiem',
@@ -142,4 +158,4 @@ The upper level serves blood (1 BP a night) for kindred with backdoor access. It
 Good Samaritan Hospital is a progressive, tertiary, not-for-profit hospital. The hospital was historically affiliated with the Episcopal Church, but currently pastoral care services are available for all religions and denominations.`,
     gps:  [-118.2674585, 34.0546739] 
   },
-]
+];

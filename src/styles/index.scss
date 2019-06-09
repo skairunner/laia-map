@@ -41,6 +41,32 @@ body {
   stroke-width: 2px;
 }
 
+#region-children {
+  list-style: none;
+  position: relative;
+  margin-left: 0;
+  padding-left: 1.2rem;
+}
+
+.region-child::before {
+  content: ' ';
+  position: absolute;
+  left: 0;
+}
+
+.region-child.poi-elysium::before {
+  content: 'Ｙ';
+  font-weight: 600;
+}
+
+.region-child.poi-normal::before {
+  content: '⬤';
+}
+
+.region-child.poi-haven::before {
+  content: '✚';
+}
+
 #map-neighborhoods {
   fill: rgba(127,201,127, 0);
 }
