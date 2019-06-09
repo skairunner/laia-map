@@ -3,6 +3,7 @@ import { topology as geo2topo } from 'topojson-server';
 import * as d3 from 'd3-selection';
 import * as d3geo from 'd3-geo';
 import * as d3zoom from 'd3-zoom';
+import * as geosimplify from 'simplify-geojson';
 import * as slugify from 'slugify';
 import { EXCLUDED_NEIGHBORHOODS, REGIONS, LARGE_REGIONS, LA_ROTATE, LA_TRANSLATE, LA_SCALE, POIS } from './constants';
 import * as util from './utility';
