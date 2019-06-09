@@ -158,4 +158,12 @@ The upper level serves blood (1 BP a night) for kindred with backdoor access. It
 Good Samaritan Hospital is a progressive, tertiary, not-for-profit hospital. The hospital was historically affiliated with the Episcopal Church, but currently pastoral care services are available for all religions and denominations.`,
     gps:  [-118.2674585, 34.0546739] 
   },
+  {
+    name: 'Test',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: ``,
+    gps: null
+  },
 ];

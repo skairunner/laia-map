@@ -22,3 +22,19 @@ export function transformFromBbox(bbox) {
   const t = [960 / 2 - k * x, 500 / 2 - k * y];
   return { k, t };
 }
+
+export function region_comparefunc(a, b) {
+  let score = 0;
+  if (a.properties.kind === 'neighborhood') {
+    score -= 10;
+  }
+  if (b.properties.kind === 'neighborhood') {
+    score += 10;
+  }
+  if (a.properties.name > b.properties.name) {
+    score += 1;
+  } else if (a.properties.name < b.properties.name) {
+    score -= 1;
+  }
+  return score;
+}

@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
+$hoodcolor: rgba(252,174,145, 1);
+
 body {
   font-family: "Open Sans", sans-serif;
 }
@@ -24,7 +26,7 @@ body {
 }
 
 .neighborhood {
-  fill: rgba(252,174,145, 1);
+  fill: $hoodcolor;
 }
 
 #Chinatown {
@@ -48,12 +50,42 @@ body {
   padding-left: 1.2rem;
 }
 
+.region-child {
+  cursor: pointer;
+}
+
 .region-child::before {
   content: ' ';
   position: absolute;
   left: 0;
 }
 
+// Region type formatting
+
+.region-child.type-neighborhood {
+  color: $hoodcolor;
+  font-weight: 600;
+}
+
+.region-child.type-neighborhood:hover {
+  color: rgb(248, 149, 114);
+} 
+
+// PoI formatting
+
+.region-child.type-poi {
+  color: #777788;
+}
+
+.region-child.type-poi:hover {
+  color: #444444;
+}
+
+.region-child.type-poi > .content {
+  font-style: italic;
+}
+
+// PoI subtype bullet point decorations
 .region-child.poi-elysium::before {
   content: 'Ｙ';
   font-weight: 600;

@@ -47,6 +47,8 @@ function render_geojson(id, classname, features, callback) {
         // Zoom to new target
         name = d.properties.name;
         childdata = all_regions.filter(datum => datum.properties.parent === name);
+        // Sort first by neighborhoods > locations, then alphabetically
+        childdata.sort(util.region_comparefunc);
         zoomtarget = d.properties.transform;
       }
       G.set_current_focus(name);
@@ -55,17 +57,21 @@ function render_geojson(id, classname, features, callback) {
         .text(name);
       let childs = d3.select('#region-children')
         .selectAll('.region-child')
-        .data(childdata);
+        .data(childdata, d => d.properties.name);
       childs.enter()
         .append('li')
         .classed('region-child', true)
         .merge(childs)
         .each(function(d) {
+          let sel = d3.select(this);
           if (d.properties.kind === 'poi') {
-            d3.select(this)
-              .classed(`poi-${d.properties.poitype}`, true);
+            sel.classed(`type-poi poi-${d.properties.poitype}`, true);
+          } else {
+            sel.classed(`type-${d.properties.kind}`, true);
           }
         })
+        .append('span')
+        .classed('content', true)
         .text(d => d.properties.name);
       childs.exit()
         .remove();
