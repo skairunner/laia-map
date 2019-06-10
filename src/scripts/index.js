@@ -5,7 +5,7 @@ import * as d3shape from 'd3-shape';
 import * as CON from './constants';
 import * as util from './utility';
 
-import { render_geojson } from './interactions';
+import { render_geojson, focus_region } from './interactions';
 import { geo, concat_regions, projection } from './globals';
 
 import '../styles/index.scss';
@@ -39,26 +39,30 @@ function make_regions(features, regiondefs, namefunc) {
 }
 
 ///////////////// The actual initialization /////////////////
-fetch('public/neighborhoods-geo.json')
-  .then(res => {
-    return res.json();
-  })
-  .then(geojson => {
-    geojson.features = geojson.features.filter(d => !CON.EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
-    let regionfeatures = make_regions(geojson.features, CON.REGIONS, d => d.properties.name)
-    concat_regions(regionfeatures);
-    render_geojson('#small-regions', 'region', regionfeatures);
-  })
+Promise.all([
+  fetch('public/neighborhoods-geo.json')
+    .then(res => {
+      return res.json();
+    })
+    .then(geojson => {
+      geojson.features = geojson.features.filter(d => !CON.EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
+      let regionfeatures = make_regions(geojson.features, CON.REGIONS, d => d.properties.name)
+      concat_regions(regionfeatures);
+      render_geojson('#small-regions', 'region', regionfeatures);
+    }),
 
-fetch('public/city-planning.json')
-  .then(res => {
-    return res.json();
-  })
-  .then(geojson => {
-    let regionfeatures = make_regions(geojson.features, CON.LARGE_REGIONS, d => d.properties.AREA_NAME);
-    concat_regions(regionfeatures);
-    render_geojson('#large-regions', 'region', regionfeatures);
-  });
+  fetch('public/city-planning.json')
+    .then(res => {
+      return res.json();
+    })
+    .then(geojson => {
+      let regionfeatures = make_regions(geojson.features, CON.LARGE_REGIONS, d => d.properties.AREA_NAME);
+      concat_regions(regionfeatures);
+      render_geojson('#large-regions', 'region', regionfeatures);
+    })
+])
+.then(d => focus_region('Los Angeles County'));
+
 
 fetch('public/tiles.topojson')
   .then(res => res.json())
@@ -95,6 +99,7 @@ d3.select('#pois')
   .data(pois)
   .enter()
   .append('path')
+  .classed('region', true)
   .each(function(d) {
     // Set appropriate transform to focus
     const coords = projection(d.geometry.coordinates);

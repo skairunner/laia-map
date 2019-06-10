@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
 $hoodcolor: rgba(252,174,145, 1);
+$highlightcolor: #FF5555;
+$selectedcolor: #009944;
 
 body {
   font-family: "Open Sans", sans-serif;
@@ -34,6 +36,14 @@ body {
   stroke-width: 2px;
 }
 
+#Chinatown.highlighted {
+  stroke: $highlightcolor;
+}
+
+#Chinatown.selected {
+  stroke: $selectedcolor;
+}
+
 #Chinatown:hover {
   stroke: rgba(99, 99, 99, 0.3);
 }
@@ -41,6 +51,19 @@ body {
 .region:hover {
   stroke: rgba(99, 99, 99, 0.3);
   stroke-width: 2px;
+}
+
+.region.highlighted {
+  stroke: $highlightcolor;
+  stroke-width: 2px;
+}
+
+.region.selected {
+  stroke: $selectedcolor;
+}
+
+#pois>.region.highlighted {
+  stroke-width: 0.5px;
 }
 
 // Sidebar
@@ -104,8 +127,23 @@ body {
   color: rgb(248, 149, 114);
 } 
 
-// PoI formatting
+.region-child.type-district::before {
+  content: '☐';
+}
 
+.region-child.type-district {
+  color: rgb(126, 124, 153);
+}
+
+.region-child.type-district:hover {
+  color: rgb(158, 154, 200);
+}
+
+.region-child.type-district > .content {
+  font-weight: 600;
+}
+
+// PoI formatting
 .region-child.type-poi {
   color: #777788;
 }
@@ -119,6 +157,7 @@ body {
 }
 
 // PoI subtype bullet point decorations
+
 .region-child.poi-elysium::before {
   content: 'Ｙ';
   font-weight: 600;

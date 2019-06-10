@@ -5,7 +5,7 @@ import * as d3zoom from 'd3-zoom';
 import * as CON from './constants';
 
 var maptransform = d3.select('#maptransform');
-export var CURRENT_FOCUS = null; // To track the zoom-in zoom-out on click
+export var CURRENT_FOCUS = 'Los Angeles County'; // To track the zoom-in zoom-out on click
 export function set_current_focus(newfocus) {
   CURRENT_FOCUS = newfocus;
 }
@@ -27,8 +27,9 @@ export var projection = d3geo.geoMercator()
 
 export var geo = d3geo.geoPath(projection);
 
-export var all_regions = [];
+export var all_regions = [CON.LA];
 export var all_regions_map = new Map();
+all_regions_map.set('Los Angeles County', CON.LA);
 
 export function concat_regions(arr) {
   all_regions = all_regions.concat(arr);

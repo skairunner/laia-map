@@ -17,6 +17,19 @@ function zoom_to(zoomtarget) {
     .call(G.ZOOM.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k));
 }
 
+function highlight(d, yes) {
+  d3.select('#' + slugify(d.properties.name))
+    .classed('highlighted', yes);
+}
+
+function do_highlight(d) {
+  highlight(d, true);
+}
+
+function un_highlight(d) {
+  highlight(d, false);
+}
+
 function update_sidebar(d, name, childdata) {
   d3.select('#region-name')
     .text(name);
@@ -57,9 +70,13 @@ function update_sidebar(d, name, childdata) {
     .classed('content', true)
     .text(d => d.properties.name)
     .on('click', d => {
+      // Dehighlight, if needed
+      un_highlight(d);
       // Focus the given location
       focus_region(d.properties.name);
-    });
+    })
+    .on('mouseover', do_highlight)
+    .on('mouseout', un_highlight);
   childs.exit()
     .remove();
 
@@ -81,9 +98,9 @@ export function focus_region(regionname) {
   const d = all_regions_map.get(regionname);
 
   let childdata = [], name, zoomtarget;
-  if (G.CURRENT_FOCUS === d.properties.name) {
-    name = '';
-    zoomtarget = { t: [0, 0], k: 1 };
+  if (G.CURRENT_FOCUS === d.properties.name && G.CURRENT_FOCUS !== 'Los Angeles County') {
+    focus_region('Los Angeles County');
+    return;
   } else {
     // Zoom to new target
     name = d.properties.name;

@@ -6,6 +6,7 @@ export const LA_TRANSLATE = [523.6547830169354, 28062.73757963573];
 export const LA_SCALE = 16982.165984676663;
 export const MAX_SCALE = 3;
 
+
 export const EXCLUDED_NEIGHBORHOODS = new Set([
   'Unincorporated Catalina Island',
   'Avalon',
@@ -33,8 +34,27 @@ export const EXCLUDED_NEIGHBORHOODS = new Set([
   'Val Verde'
 ]);
 
+export const LA = {
+  properties: {
+    name: 'Los Angeles County',
+    kind: 'county',
+    transform: {t: [0, 0], k: 1}
+  }
+};
+
+// Sets parent to LA if null
+function preprocess_region(arr) {
+  for (let reg of arr) {
+    if (reg.parent === undefined) {
+      reg.parent = 'Los Angeles County';
+    }
+  }
+
+  return arr;
+}
+
 // Combinations of neighborhoods
-export const REGIONS = [
+export const REGIONS = preprocess_region([
   {
     name: 'Downtown',
     neighborhoods: 'Downtown',
@@ -94,10 +114,10 @@ export const REGIONS = [
     parent: 'Inner City',
     color: null
   },
-];
+]);
 
 // Combinations of city planning areas
-export const LARGE_REGIONS = [
+export const LARGE_REGIONS = preprocess_region([
   {
     name: 'Outskirts',
     neighborhoods: [
@@ -121,7 +141,7 @@ export const LARGE_REGIONS = [
     kind: 'district',
     color: 'rgb(203, 201, 226)'
   }
-];
+]);
 
 // Map PoI Types to symbols
 export const SYMBOLS = {
@@ -137,7 +157,7 @@ export const SYMBOLS_UNICODE = {
   haven: '✚',
 }
 
-export const POIS = [
+export const POIS = preprocess_region([
   {
     name: 'Requiem',
     kind: 'poi',
@@ -164,4 +184,4 @@ Good Samaritan Hospital is a progressive, tertiary, not-for-profit hospital. The
     blurb: ``,
     gps: null
   },
-];
+]);
