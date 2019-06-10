@@ -8,27 +8,27 @@ import * as util from './utility';
 
 
 let PREV_ZOOM = 1;
+let MARK_SIZE = 8;
 
-// Also focuses the region in question
-export function zoom_to(regionname) {
-  const d = all_regions_map.get(regionname);
+function zoom_to(zoomtarget) {
+  // Do zoom
+  d3.select('#lamap')
+    .call(G.ZOOM.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k));
+}
 
-  let childdata = [], name, zoomtarget;
-  if (G.CURRENT_FOCUS === d.properties.name) {
-    name = '';
-    zoomtarget = { t: [0, 0], k: 1 };
-  } else {
-    // Zoom to new target
-    name = d.properties.name;
-    zoomtarget = d.properties.transform;
-    // Sort first by neighborhoods > locations, then alphabetically
-    childdata = all_regions.filter(datum => datum.properties.parent === name);
-    childdata.sort(util.region_comparefunc);
-  }
-  G.set_current_focus(name);
-  // update sidebar
+function update_sidebar(d, name, childdata) {
   d3.select('#region-name')
     .text(name);
+  
+  const blurb = d.properties.blurb ? d.properties.blurb : '';
+  d3.select('#region-desc')
+    .html('')
+    .selectAll('p')
+    .data(blurb.split('\n'))
+    .enter()
+    .append('p')
+    .text(d => d);
+
   let childs = d3.select('#region-children')
     .selectAll('.region-child')
     .data(childdata, d => d.properties.name);
@@ -48,40 +48,52 @@ export function zoom_to(regionname) {
     .classed('content', true)
     .text(d => d.properties.name)
     .on('click', d => {
-      // Zoom to the given location
-      zoom_to(d.properties.name);
+      // Focus the given location
+      focus_region(d.properties.name);
     });
   childs.exit()
     .remove();
-  // Do zoom
-  d3.select('#lamap')
-    .call(G.ZOOM.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k));
-  // If zoom is within certain bounds, make circles smaller
-  if (PREV_ZOOM !== zoomtarget.k) { // only update on change
-    PREV_ZOOM = zoomtarget.k;
-    let radius = 1;
-    if (zoomtarget.k < 4) {
-      radius = 1;
-    } else if (zoomtarget.k < 6) {
-      radius = 0.75;
-    } else {
-      radius = 0.5;
-    }
-    d3.select('#pois')
-      .selectAll('.poi')
-      .attr('r', radius);
-  }
-  // Add back button, if applicable
+
+  // Enable back button, if applicable
   if (d.properties.parent) {
     d3.select('#go-back')
       .classed('active', true)
       .on('click', () => {
-        zoom_to(d.properties.parent);
+        focus_region(d.properties.parent);
       });
-  } else {
+  } else { // Disable otherwise
     d3.select('#go-back')
       .classed('active', false);
   }
+}
+
+// Also focuses the region in question
+export function focus_region(regionname) {
+  const d = all_regions_map.get(regionname);
+
+  let childdata = [], name, zoomtarget;
+  if (G.CURRENT_FOCUS === d.properties.name) {
+    name = '';
+    zoomtarget = { t: [0, 0], k: 1 };
+  } else {
+    // Zoom to new target
+    name = d.properties.name;
+    zoomtarget = d.properties.transform;
+    // Sort first by neighborhoods > locations, then alphabetically
+    childdata = all_regions.filter(datum => datum.properties.parent === name);
+    childdata.sort(util.region_comparefunc);
+  }
+  G.set_current_focus(name);
+
+  zoom_to(zoomtarget);
+
+  // If zoom is within certain bounds, make marks smaller
+  if (PREV_ZOOM !== zoomtarget.k) { // only update on change
+    PREV_ZOOM = zoomtarget.k;
+    //
+  }
+
+  update_sidebar(d, name, childdata);
 }
 
 const _defaultRenderGeojsonCallback = d => {};
@@ -101,5 +113,5 @@ export function render_geojson(id, classname, features, callback) {
       d.properties.transform = util.transformFromBbox(this.getBBox());
     })
     .on('mouseover', callback)
-    .on('click', d => zoom_to(d.properties.name));
+    .on('click', d => focus_region(d.properties.name));
 }
