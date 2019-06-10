@@ -43,6 +43,29 @@ body {
   stroke-width: 2px;
 }
 
+// Sidebar
+#go-back {
+  background-color: white;
+  height: 2rem;
+  width: 2rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  font-size: 16pt;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0;
+}
+
+#go-back.active {
+  opacity: 1;
+}
+
+#go-back:hover {
+  color: #888888;
+  text-decoration: underline;
+}
+
 #region-children {
   list-style: none;
   position: relative;
