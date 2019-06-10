@@ -89,7 +89,7 @@ const pois = CON.POIS.map(d => ({
 concat_regions(pois);
 
 
-let symbolgen = d3shape.symbol().size(8);
+let symbolgen = d3shape.symbol().size(4);
 d3.select('#pois')
   .selectAll('.poi')
   .data(pois)

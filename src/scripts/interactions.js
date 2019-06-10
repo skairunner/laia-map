@@ -1,17 +1,18 @@
 import * as d3 from 'd3-selection';
+import * as d3shape from 'd3-shape';
 import * as d3zoom from 'd3-zoom';
 import * as slugify from 'slugify';
 
+import * as CON from './constants';
 import { geo, all_regions, all_regions_map } from './globals';
 import * as G from './globals';
 import * as util from './utility';
 
 
 let PREV_ZOOM = 1;
-let MARK_SIZE = 8;
 
+// Do zoom
 function zoom_to(zoomtarget) {
-  // Do zoom
   d3.select('#lamap')
     .call(G.ZOOM.transform, d3zoom.zoomIdentity.translate(zoomtarget.t[0], zoomtarget.t[1]).scale(zoomtarget.k));
 }
@@ -28,6 +29,14 @@ function update_sidebar(d, name, childdata) {
     .enter()
     .append('p')
     .text(d => d);
+  
+  if (d.properties.poitype) {
+    d3.select('#poitype')
+      .text(`(${d.properties.poitype})`);
+  } else {
+    d3.select('#poitype')
+      .text('');
+  }
 
   let childs = d3.select('#region-children')
     .selectAll('.region-child')
@@ -86,12 +95,6 @@ export function focus_region(regionname) {
   G.set_current_focus(name);
 
   zoom_to(zoomtarget);
-
-  // If zoom is within certain bounds, make marks smaller
-  if (PREV_ZOOM !== zoomtarget.k) { // only update on change
-    PREV_ZOOM = zoomtarget.k;
-    //
-  }
 
   update_sidebar(d, name, childdata);
 }
