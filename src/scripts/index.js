@@ -96,7 +96,7 @@ d3.select('#pois')
   .append('path')
   .each(function(d) {
     const coords = projection(d.geometry.coordinates);
-    d.properties.transform = { t: coords, k: CON.MAX_SCALE };
+    d.properties.transform = util.transformFromBbox({ x: coords[0], y: coords[1], width: 8, height: 8});
   })
   .attr('transform', d => `translate(${projection(d.geometry.coordinates)})`)
   .attr('d', d => symbolgen.type(CON.SYMBOLS[d.properties.poitype])());
