@@ -94,7 +94,9 @@ export function focus_region(regionname) {
   }
   G.set_current_focus(name);
 
-  zoom_to(zoomtarget);
+  // Don't zoom if no gps coordinates
+  if (d.properties.gps !== null)
+    zoom_to(zoomtarget);
 
   update_sidebar(d, name, childdata);
 }

@@ -80,7 +80,7 @@ const pois = CON.POIS.map(d => ({
   'type': 'Feature',
   geometry: {
     'type': 'Point',
-    coordinates: d.gps ? d.gps : [0, 0]
+    coordinates: d.gps ? d.gps : [-1, -1]
   },
   properties: {
     ...d
