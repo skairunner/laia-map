@@ -19,12 +19,12 @@ body {
 
 .svgholder {
   height: 95vh;
-  width: 70vw;
+  width: 60vw;
 }
 
 .sidebar {
   height: 100%;
-  width: 20vw;
+  width: 30vw;
 }
 
 .neighborhood {
@@ -69,6 +69,10 @@ body {
 // Sidebar
 #region-name {
   margin-bottom: 0;
+}
+
+#region-desc {
+  color: #444444;
 }
 
 #poitype {
