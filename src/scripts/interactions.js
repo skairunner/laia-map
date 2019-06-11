@@ -111,6 +111,10 @@ export function focus_region(regionname) {
   }
   G.set_current_focus(name);
 
+  // Select current region on map
+  d3.selectAll('.region')
+    .classed('selected', d => d.properties.name !== 'Los Angeles County' && d.properties.name === G.CURRENT_FOCUS);
+
   // Don't zoom if no gps coordinates
   if (d.properties.gps !== null)
     zoom_to(zoomtarget);
