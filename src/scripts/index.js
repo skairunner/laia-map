@@ -107,4 +107,5 @@ d3.select('#pois')
   })
   .attr('id', d => slugify(d.properties.name))
   .attr('transform', d => `translate(${projection(d.geometry.coordinates)})`)
-  .attr('d', d => symbolgen.type(CON.SYMBOLS[d.properties.poitype])());
+  .attr('d', d => symbolgen.type(CON.SYMBOLS[d.properties.poitype])())
+  .on('click', d => focus_region(d.properties.name));
