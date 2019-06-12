@@ -132,6 +132,10 @@ body {
   font-weight: 600;
 }
 
+.region-child.type-neighborhood::before {
+  content: '■',
+}
+
 .region-child.type-neighborhood:hover {
   color: rgb(248, 149, 114);
 } 
@@ -173,7 +177,7 @@ body {
 }
 
 .region-child.poi-normal::before {
-  content: '⬤';
+  content: '●';
 }
 
 .region-child.poi-haven::before {

@@ -37,7 +37,7 @@ export const EXCLUDED_NEIGHBORHOODS = new Set([
 export const LA = {
   properties: {
     name: 'Los Angeles County',
-    blurb: `The gem of the West Coast. Rattled by the all-out gang wars of the 1920s, an unprecedented investment and redevelopment effort by large companies such as Venture Corporation, among others, in the 50s has managed to reinstall some degree of safety to its streets. Enough to live without having to wonder if you'll never wake up, at least. On the Kindred side of things, Baron Baldwin, the Brujah leader of the Anarch movement which calls LA home, has displayed political acumen on par with his predecessor. By grabbing hands with the venerable Ventrue Clan Elder/converted Anarch, Aina Gladvold, he has managed to keep the Anarch's various sub-factions from collapsing into orderless squabbling, as well as hedging out Camarilla and Giovanni interests. But this fragile peace threatens to be disturbed: the arrival of Archon Khoroi and the installation of a false Prince are not good omens for the movement. Only time will tell whether LA will remain the cultural capital of the Anarch Free State.`,
+    blurb: `The gem of the West Coast. Rattled by the all-out gang wars of the 1920s, an unprecedented investment and redevelopment effort in the 50s by large companies such as Venture Corporation, among others, has managed to reinstall some degree of safety to its streets. Enough to live without having to wonder if you'll never wake up, at least. On the Kindred side of things, Baron Baldwin, the Brujah leader of the Anarch movement which calls LA home, has displayed political acumen on par with his predecessor. By grabbing hands with the venerable Ventrue Clan Elder/converted Anarch, Aina Gladvold, he has managed to keep the Anarch's various sub-factions from collapsing into orderless squabbling, as well as hedging out Camarilla and Giovanni interests. But this fragile peace threatens to be disturbed: the arrival of Archon Khoroi and the installation of a false Prince are not good omens for the movement. Only time will tell whether LA will remain the cultural capital of the Anarch Free State.`,
     kind: 'county',
     transform: {t: [0, 0], k: 1}
   }
@@ -159,13 +159,6 @@ export const SYMBOLS = {
   elysium: d3shape.symbolWye,
   normal: d3shape.symbolCircle,
   haven: d3shape.symbolCross,
-}
-
-// Map PoI Types to unicode symbols, for sidebar
-export const SYMBOLS_UNICODE = {
-  elysium: 'Ｙ',
-  normal: '⬤',
-  haven: '✚',
 }
 
 const pois_downtown = [
