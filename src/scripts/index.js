@@ -46,6 +46,14 @@ Promise.all([
     })
     .then(geojson => {
       geojson.features = geojson.features.filter(d => !CON.EXCLUDED_NEIGHBORHOODS.has(d.properties.name));
+      // d3.select('#neighborhoods')
+      //   .selectAll('.latimes-neighborhood')
+      //   .data(geojson.features)
+      //   .enter()
+      //   .append('path')
+      //   .classed('latimes-neighborhood', true)
+      //   .attr('d', geo)
+      //   .on('mouseover', d => console.log(d.properties.name));
       let regionfeatures = make_regions(geojson.features, CON.REGIONS, d => d.properties.name)
       concat_regions(regionfeatures);
       render_geojson('#small-regions', 'region', regionfeatures);

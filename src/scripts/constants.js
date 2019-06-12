@@ -83,7 +83,7 @@ export const REGIONS = preprocess_region([
   },
   {
     name: 'Hollywood',
-    neighborhoods: ['Hollywood', 'East Hollywood', 'West Hollywood', 'Hollywood Hills', 'Hollywood Hills West', 'North Hollywood', 'Universal City', 'Studio City'],
+    neighborhoods: ['Hollywood', 'East Hollywood', 'West Hollywood', 'Hollywood Hills', 'Hollywood Hills West', 'North Hollywood', 'Universal City', 'Studio City', 'Los Feliz', 'Burbank', 'Griffith Park', 'Toluca Lake'],
     blurb: `The winding streets of Hollywood's rolling hills feature palm trees, incredible vistas, and rich, luxury homes peppered across the landscape. Though it used to be where the vast majority of the movie industry filmed its works, it is now more of a tourist spot than anything else. One of the least diverse areas in the city, the roughly twenty thousand people living there are typically wealthy homeowners or middle-class renters. Despite its seemingly safe, upper-class appearance, one should still be careful when walking through the streets at night, as there are predators of all kinds looking to take advantage of unsuspecting citizens.`,
     kind: 'district',
     color: 'rgb(158, 154, 200)'
@@ -175,7 +175,7 @@ const pois_downtown = [
     poitype: 'elysium',
     parent: 'Downtown',
     blurb: `A popular public nightclub for both kindred and kine. The lower level is primarily where the kine congregate, featuring flashing lights, throbbing bass, and a constantly packed dance floor. The music seems to be generic pop of all sorts, ranging from country pop to hip-hop, but always whatever happens to be hot on the radio lately.\nThe upper level serves blood (1 BP a night) for kindred with backdoor access. It seems to be somewhat classier than the nightclub below, with a more relaxed atmosphere. This is an Anarch owned Elysium.`,
-    gps: null // GPS can be omitted to not display on map, only on sidebar
+    gps: [-118.2611908, 34.042485] // GPS can be omitted to not display on map, only on sidebar
   },
   {
     name: 'Good Samaritan Hospital',
@@ -270,11 +270,137 @@ Good Samaritan Hospital is a progressive, tertiary, not-for-profit hospital. The
 ];
 
 const pois_hollywood = [
-
+  {
+    name: 'Carvoletti Cafe',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `A newcomer to the Hollywood upscale dining scene, this Italian restaurant caters to those of means. Located near Paramount Pictures, it is one of the most popular places to dine in the evenings and is open late. It is rumored that the restaurant is owned by the Giovanni, or is at least connected to the family.`,
+    gps: [-118.3278168, 34.0921122]
+  },
+  {
+    name: 'Hollywood Forever Cemetary',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `The Hollywood Forever Cemetery is one of L.A.'s most famously morbid features. The land within the walls is hauntingly beautiful, well manicured by the groundskeepers, who prim and trim the many plants and bushes that breath life into an otherwise cold and lifeless place. Aside from a large pond in the center, there are hundreds of crypts, above ground tombs, monuments, statues, and memorial plinths. Many souls have come to rest in this location, none of whom have been forgotten. Aside from a couple of damaged stone crypts and busted marble walls, the cemetery is in good shape. Unfortunately, this beauty is not as apparent after dusk, when dark denizens of the night come out of their resting places. Creatures lurking in the shadows wait patiently to lure in one of the foolish goth kids that tend to sneak in through hidden entrances.`,
+    gps: [-118.321202, 34.0887856,]
+  },
+  {
+    name: 'Paramount Pictures',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `Paramount Pictures is one of the world's most recognized and celebrated film studios. The Viacom-owned corporation is located in Hollywood. Secretly, however, every Toreador in L.A. knows it to be one of the major strongholds of the Clan; the studio is secretly controlled by the Toreadors, and is often host to their meetings and even rarely some of their legendary social balls or gatherings for all select Kindred.`,
+    gps: [-118.3709955, 34.0763376]
+  },
+  {
+    name: 'The Snakehole Lounge',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `Perhaps at odds with the wilder Hollywood party scene, the Snakehole Lounge is a quiet bar tucked into an equally quiet neighborhood. Its relaxed atmosphere meshes well with the owners' preference to feature many local bands, ranging the genre gamut from hard rock to acoustic indie music.`,
+    gps: [-118.35849, 34.0895334]
+  },
+  {
+    name: 'Walk of Fame',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `The Hollywood Walk of Fame is am infamous series of brass and terrazzo stars embedded in the sidewalks along Hollywood Boulevard and Vine Street. A popular tourist attraction, this monument to stardom attracts millions of tourists to touch the imprints where their favorite stars' once cast their hands. Over 2600 names have been added to the ever-growing list of actors, directors, producers, musicians, singers, performers and other various characters.`,
+    gps: [-118.3358652, 34.1016691]
+  },
+  {
+    name: 'Hollywood Sign',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `H O L L Y W O O D is the famous landmark that gives the town international recognition due to its iconic imagery in entertainment media. The white letters are each 44 foot tall and spans a length of 352 feet. It is forbidden to walk up and touch the sign due to its security restrictions in Griffith Park, but that doesn't stop certain motivated individuals from doing it anyway.`,
+    gps: [-118.3238652, 34.1340213]
+  },
+  {
+    name: 'Blessed Sacrament',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Hollywood',
+    blurb: `A Roman Catholic church in the heart of Hollywood that serves an urban, multi-ethnic community. Dedicated in 1928, it has thrived in part thanks to the contributions of many old-time Hollywood stars. Its dramatic interior is intentionally modeled after San Pedro Church.`,
+    gps: [-118.3372926, 34.0985135]
+  }
 ];
 
 const pois_innercity = [
-
+  {
+    name: 'Tremere Chantry',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: `One of the finest Chantries on the West Coast, the building is one of two havens protected by the Regent, Conrad Lehmann. It is a place where Tremere may safely reside without threat from other clans. It is an unassuming building, slightly run down at first glance, but otherwise the property is well-maintained. It bears a single gas lantern which illuminates its front entrance. This building is protected by a series of intersecting hallways, some Tremere sorcery which leaves uneducated guests lost like in a cornfieldn. Many hallways lead to the same place, and most of them right back to the starting point, inviting unwelcome guests to leave via the front door. If one knows the right turns, they find themselves in the chantry's main rooms, a sanctuary, library and a small laboratory. The buildings around the Chantry are all owned by the Regent, for security.`,
+    gps: null,
+  },
+  {
+    name: 'LAPD HQ',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: `The home of the LAPD, a massive building that looks like a glass cube held in a white tile vice.`,
+    gps: [-118.271065, 34.053575],
+  },
+  {
+    name: 'UCLA Medical Center',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Santa Monica',
+    blurb: `UCLA Medical Center - Santa Monica is a modern 300-bed medical center with surgical wards, ER and ICU that also serves as a teaching hospital. Many Santa Monica patients are transferred here to take advantage of its medical equipment, surgical team and, unfortunately, sometimes its morgue. Its medical professionals are incredibly overworked as a result. Most notable is the fact that UMC-SM houses metro LA's only certified medical examiner (as opposed to coroner), Dr. Jeanne Hasper.`,
+    gps: [-118.488343, 34.0270141],
+  },
+  {
+    name: 'Old Chinatown Plaza',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Chinatown',
+    blurb: `The main plaza of historic old Chinatown, moved to its current location along with the new Chinatown, it remains a popular tourist spot. Within the plaza, there are a number of shops to enjoy food and entertainment, as well as space to host special events. One famous event is the KCRW Summer Nights event in which the community is invited to party until midnight, dancing to live music, dining at local food trucks, and participating in cultural workshops. Typically there is a craft beer garden, several cooking demonstrations, and an old-world, vintage market that sells odd and ends. The area is known for flashy neon lights coexisting alongside traditional paper lanterns and Japanese-influenced architecture.`,
+    gps: [-118.2381017, 34.0652019],
+  },
+  {
+    name: 'Shitty 7-11',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: `A rundown "7-11" located in the endlessly nondescript streets and alleys of the LA inner city area. It provides all amenities expected of a 7-11, including Slurpi® frozen ice cream slushie drinks, snacks, weed, crack, heroin, blood, and cheap coffee-like liquid.`,
+    gps: [-118.3419317, 33.978092],
+  },
+  {
+    name: 'Wildlife Assurance Agency',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: `The perfectly normal office of the Wildlife Assurance Agency. Despite its name, there don't seem to be much in the way of wildlife here, nor does the security seem normal for an environment-related organization.`,
+    gps: [-118.2476909, 33.9965424],
+  },
+  {
+    name: 'FBI Surveillance Team #5',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Eastside LA',
+    blurb: `Although the main LA FBI location is to the north-east of Santa Monica, another publicly owned location is available in the fringe of Eastside LA. Precious little is known about the activities conducted in the fenced-off parking lot and accompanying adobe-red buildings.`,
+    gps: [-118.1587112, 34.0160868],
+  },
+  {
+    name: 'Last Call Bar',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Inner City',
+    blurb: `The Last Call Bar is a generic decently sized bar located within the Inner City of Los Angeles that is a common hangout for many of the local punks and goths in the city. While it isn't explicitly a kindred's domain, it is rumored that a kindred's herd hangs out here constantly, so it's recommended to tread carefully.`,
+    gps: null,
+  },
+  {
+    name: 'YMCA of Metropolitan Los Angeles',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Koreatown',
+    blurb: `The Y of Metropolitan LA is a five story glass-facade building (including basement levels) that hosts facilities such as an indoor basketball court, swimming pool, gym and community arts lessons. Due to its non-profit nature as well as its underground parking lot, the Y serves as a popular place for those who wish to use sports facilities, especially by lower-income families in the inner city area.`,
+    gps: [-118.2948052, 34.055616],
+  },
 ];
 
 const pois_outskirts = [
