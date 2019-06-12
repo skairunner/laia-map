@@ -9,7 +9,6 @@ import { render_geojson, focus_region } from './interactions';
 import { geo, concat_regions, projection } from './globals';
 
 import '../styles/index.scss';
-import slugify from 'slugify';
 
 
 // accept geojson features, and regiondefs array, then return list of region geojson objects
@@ -113,7 +112,7 @@ d3.select('#pois')
     const coords = projection(d.geometry.coordinates);
     d.properties.transform = util.transformFromBbox({ x: coords[0], y: coords[1], width: 8, height: 8});
   })
-  .attr('id', d => slugify(d.properties.name))
+  .attr('id', d => util.slugify(d.properties.name))
   .attr('transform', d => `translate(${projection(d.geometry.coordinates)})`)
   .attr('d', d => symbolgen.type(CON.SYMBOLS[d.properties.poitype])())
   .on('click', d => focus_region(d.properties.name));

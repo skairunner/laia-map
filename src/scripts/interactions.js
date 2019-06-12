@@ -1,9 +1,6 @@
 import * as d3 from 'd3-selection';
-import * as d3shape from 'd3-shape';
 import * as d3zoom from 'd3-zoom';
-import * as slugify from 'slugify';
 
-import * as CON from './constants';
 import { geo, all_regions, all_regions_map } from './globals';
 import * as G from './globals';
 import * as util from './utility';
@@ -18,7 +15,7 @@ function zoom_to(zoomtarget) {
 }
 
 function highlight(d, yes) {
-  d3.select('#' + slugify(d.properties.name))
+  d3.select('#' + util.slugify(d.properties.name))
     .classed('highlighted', yes);
 }
 
@@ -133,7 +130,7 @@ export function render_geojson(id, classname, features, callback) {
     .classed(classname, true)
     .classed('neighborhood', d => d.properties.kind === 'neighborhood')
     .attr('d', geo)
-    .attr('id', d => slugify(d.properties.name))
+    .attr('id', d => util.slugify(d.properties.name))
     .style('fill', d => d.properties.color)
     .each(function(d) {
       d.properties.transform = util.transformFromBbox(this.getBBox());

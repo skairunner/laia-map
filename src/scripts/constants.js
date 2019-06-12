@@ -394,10 +394,49 @@ const pois_innercity = [
     blurb: `The Y of Metropolitan LA is a five story glass-facade building (including basement levels) that hosts facilities such as an indoor basketball court, swimming pool, gym and community arts lessons. Due to its non-profit nature as well as its underground parking lot, the Y serves as a popular place for those who wish to use sports facilities, especially by lower-income families in the inner city area.`,
     gps: [-118.2948052, 34.055616],
   },
+  {
+    name: 'Santa Monica Pier',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Santa Monica',
+    blurb: `The Santa Monica Pier was constructed in 1909 and is considered a historic L.A. landmark. The pier is a popular hangout for tourists during the day and a place for lowlifes and punks to hang out at night. The main street features a number of small businesses and facilities, including a ball room, an arcade hall, and an old carousel among other attractions. Here you can test your wits at a game of skill or take in some of the local culture. Down below the storefronts, the ocean water laps at the shore of Santa Monica's sandy beach area. It's not much of a sight, but young kids like to post up there during odd hours of the night, sitting around campfires and doing who knows what else. You meet some interesting characters out there, but none of them seem to have anything better to do than stand around and watch the fire crackling into the night sky. There are several stairways leading to various locations, but the locals know not to stray too far, due to shady characters lurking around the beach.`,
+    gps: [-118.4999956, 34.0090398],
+  },
 ];
 
 const pois_outskirts = [
-
+  {
+    name: 'Arcadia Arboretum',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Outskirts',
+    blurb: `The Los Angeles County Arboretum and Botanic Garden, 127 acres, is an arboretum, botanical garden, and historical site nestled into hills near the San Gabriel Mountains, at 301 North Baldwin Avenue, Arcadia, California, United States.`,
+    gps: [-118.0535515, 34.1445338],
+  },
+  {
+    name: 'Brothers Salvage',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Outskirts',
+    blurb: `Not much can be said about Brother's Salvage, except it's the preferred meeting place of the local Gangrel. The rusted gates are locked off from prying eyes, but if you were to hop the fence, you'd find nothing but heaps of scrap parts and chassis from busted old vehicles. Be careful not to make too much noise, if you do decide to venture in there to take a peek. The property owners keep a mean, old guard dog in the lot, likely to bite your hand clean off if he sniffs you out. Truth is, there's not much of a reason to be there unless you're looking to replace the door to your dad's broken down truck from the 70s. Sure, a junkyard may seem interesting, but it's no playground. Sharp metal and columns of poorly stacked cars can be a real hazard if you're not paying attention. Best to steer clear of that place until you have a good reason. During the day, the small office is open from 10 to 6, but you never really know which brother is going to be there, if any.`,
+    gps: [-118.1135306, 34.1165886],
+  },
+  {
+    name: 'Giovanni Mansion',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Outskirts',
+    blurb: `The Giovanni family is well known throughout Los Angeles for being wealthy, powerful, and dangerously influential. They are infamous for their political and personal affairs and for throwing their weight around to get what they want. The Giovanni Stronghold is a large estate with well-kept grounds, surrounded by heavily wooded acres of land. The compound itself is walled off and monitored by security on a constant basis. The mansion is as cold as it is beautiful, made of greystone and lime, with six towering marble columns holding up the roof to the carport overhang. In the center of the circular, roundabout at the forefront of the mansion, sits an elaborate stone fountain, which filters pure, crystalline water 24/7. If all this wasn't enough to convince outsiders of their wealth and prestige, they would be dazzled by the innards of the facility. Decadent fabrics, polished brass, marble, and glass adorn the interior. Rooms upon rooms exist solely to make the place feel disturbingly vacant.`,
+    gps: [-118.64978, 34.1603473]
+  },
+  {
+    name: 'Abandoned Warehouse (Industry)',
+    kind: 'poi',
+    poitype: 'normal',
+    parent: 'Outskirts',
+    blurb: `Once a private storage facility, the dilapidated warehouse now only known as “Industrial” is located within the heart of LA’s industrial district. It is a rather large space with hanging fluorescent lights connected to a central generator.\nOn the first level there is a makeshift bar set up with both bottles of booze, blood, and blood spiked with various substances available. The rest of the floor is littered with couches, tables, a pool table, and other such things that could (and shouldn’t) be found in a bar.\nThe second level made up entirely of shoddy catwalks bolted to the sides and across the ceiling of the building.There is a singular office at the top which Baron Baldwin resides for the celebration. Beside the door and it’s guards, there is a small stand with a dispenser of tickets and the sign “take a number” above it.`,
+    gps: [-117.9566902, 34.0091277],
+  },
 ];
 
 export const POIS = preprocess_region(pois_downtown.concat(pois_hollywood, pois_innercity, pois_outskirts));

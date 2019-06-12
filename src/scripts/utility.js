@@ -1,4 +1,5 @@
 import { MAX_SCALE } from './constants';
+import * as _slugify from 'slugify';
 
 /**
  * @typedef {Object} ZoomTransform
@@ -37,4 +38,8 @@ export function region_comparefunc(a, b) {
     score -= 1;
   }
   return score;
+}
+
+export function slugify(s) {
+  return _slugify(s.replace(/[)(]/gi, ''));
 }
